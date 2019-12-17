@@ -1,8 +1,8 @@
 package main
 
 import (
-	"library/config"
-	"library/product"
+	"todomicro/config"
+	"todomicro/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,10 +10,9 @@ import (
 func main() {
 	r := gin.Default()
 	db := config.DBInit()
-	product := product.Product{DB: db}
+	product := service.Product{DB: db}
 
 	r.GET("/products", product.GetProducts)
-	r.POST("/products", product.CreateProduct)
 
 	r.Run()
 }
