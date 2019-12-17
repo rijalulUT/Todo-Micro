@@ -11,8 +11,9 @@ func main() {
 	r := gin.Default()
 	db := config.DBInit()
 	category := service.Category{DB: db}
+	detail := service.CategoryDetail{DB: db}
 
 	r.GET("/category", category.GetCategory)
-
+	r.GET("/detail/:id", detail.GetDetailCategory)
 	r.Run()
 }
