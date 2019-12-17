@@ -97,3 +97,38 @@ func (p *Category) DeleteCategory(c *gin.Context) {
 		"data":    category,
 	})
 }
+
+func (p *Category) UpdateCategory(c *gin.Context) {
+	db := p.DB
+	var category model.TodoCategory
+
+	request := struct {
+		Data struct {
+			Title       string `json:"title"`
+			Description string `json:"description"`
+		}
+	}{}
+
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	id := c.Param("id")
+	uintid, _ := strconv.ParseUint(id, 10, 64)
+	category.ID = uintid
+
+	db.First(&category)
+	category.Title = request.Data.Title
+	category.Description = request.Data.Description
+
+	db.Save(&category)
+
+	c.JSON(500, gin.H{
+		"success": "true",
+		"data":    &category,
+	})
+
+}
