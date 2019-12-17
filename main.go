@@ -10,9 +10,9 @@ import (
 func main() {
 	r := gin.Default()
 	db := config.DBInit()
-	product := service.Product{DB: db}
+	category := service.Category{DB: db}
 
-	r.GET("/products", product.GetProducts)
+	r.GET("/category", category.GetCategory)
 
 	r.Run()
 }
