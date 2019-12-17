@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"todomicro/model"
 
 	"github.com/gin-gonic/gin"
@@ -31,6 +32,33 @@ func (p *Category) GetCategory(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"success": true,
 		"data":    category,
+	})
+}
+
+func (p *Category) CreateCategory(c *gin.Context) {
+	request := struct {
+		Data struct {
+			Title       string `json:"title"`
+			Description string `json:"description"`
+		}
+	}{}
+
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	fmt.Println(&request)
+	var category model.TodoCategory
+	category.Title = request.Data.Title
+	category.Description = request.Data.Description
+	category.UserID = 1
+
+	p.DB.Create(&category)
+	c.JSON(200, gin.H{
+		"success": "true",
+		"data":    &category,
 	})
 }
 
