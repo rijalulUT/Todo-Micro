@@ -16,5 +16,6 @@ func main() {
 	r.GET("/category", category.GetCategory)
 	r.GET("/detail/:id", detail.GetDetailCategory)
 	r.POST("/category", category.CreateCategory)
+	r.DELETE("/category/:id", category.DeleteCategory)
 	r.Run()
 }

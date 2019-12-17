@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"strconv"
 )
 
 type Category struct {
@@ -77,3 +78,22 @@ func (p *Category) CreateCategory(c *gin.Context) {
 // 		"message": "success",
 // 	})
 // }
+
+// Delete Dzakiy
+func (p *Category) DeleteCategory(c *gin.Context) {
+	db := p.DB
+	var category model.TodoCategory
+	var detail model.TodoDetail
+
+	id := c.Param("id")
+	uintid, _ := strconv.ParseUint(id, 10, 64)
+	db.Delete(&category, id)
+	db.Delete(&detail, model.TodoDetail{
+		CategoryID: uintid,
+	})
+
+	c.JSON(200, gin.H{
+		"success": true,
+		"data":    category,
+	})
+}
