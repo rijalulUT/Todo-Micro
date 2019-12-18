@@ -18,6 +18,13 @@ func (p *ToDoDetail) GetToDoDetail(c *gin.Context) {
 	id := c.Param("id")
 	db.First(&detail, id)
 
+	if (model.TodoDetail{}) == detail {
+		c.JSON(200, gin.H{
+			"success": false,
+			"data":    "no data",
+		})
+		return
+	}
 	c.JSON(200, gin.H{
 		"success": true,
 		"data":    detail,
