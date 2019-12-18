@@ -29,12 +29,19 @@ func (p *Category) GetCategory(c *gin.Context) {
 	var category []model.TodoCategory
 	// var Categorys []model.Category
 
-	db.Find(&category)
+	if err := db.Find(&category).Error; err != nil {
+		c.JSON(500, gin.H{
+			"success":  false,
+			"messages": err.Error,
+		})
+		return
+	}
 	if len(category) == 0 {
 		c.JSON(200, gin.H{
 			"success": false,
 			"data":    category,
 		})
+		return
 	}
 	c.JSON(200, gin.H{
 		"success": true,
