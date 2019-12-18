@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"todomicro/model"
 
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"strconv"
 )
 
 type Category struct {
@@ -129,6 +130,41 @@ func (p *Category) UpdateCategory(c *gin.Context) {
 	c.JSON(500, gin.H{
 		"success": "true",
 		"data":    &category,
+	})
+
+}
+
+func (p *Category) UpdateDetail(c *gin.Context) {
+	db := p.DB
+	var detail model.TodoDetail
+
+	request := struct {
+		Data struct {
+			Title   string `json:"title"`
+			Content string `json:"content"`
+		}
+	}{}
+
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	id := c.Param("id")
+	uintid, _ := strconv.ParseUint(id, 10, 64)
+	detail.ID = uintid
+
+	db.First(&detail)
+	detail.Title = request.Data.Title
+	detail.Content = request.Data.Content
+
+	db.Save(&detail)
+
+	c.JSON(500, gin.H{
+		"success": "true",
+		"data":    &detail,
 	})
 
 }

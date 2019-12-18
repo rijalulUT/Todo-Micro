@@ -19,6 +19,7 @@ func main() {
 	r.DELETE("/category/:id", category.DeleteCategory)
 	r.PUT("/category/:id", category.UpdateCategory)
 	r.POST("/detail", detail.CreateToDoDetail)
+	r.PUT("/detail/:id", category.UpdateDetail)
 
 	r.Run()
 }
