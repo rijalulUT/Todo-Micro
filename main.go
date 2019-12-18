@@ -11,13 +11,14 @@ func main() {
 	r := gin.Default()
 	db := config.DBInit()
 	category := service.Category{DB: db}
-	detail := service.CategoryDetail{DB: db}
+	detail := service.ToDoDetail{DB: db}
 
 	r.GET("/category", category.GetCategory)
-	r.GET("/detail/:id", detail.GetDetailCategory)
+	r.GET("/detail/:id", detail.GetToDoDetail)
 	r.POST("/category", category.CreateCategory)
 	r.DELETE("/category/:id", category.DeleteCategory)
 	r.PUT("/category/:id", category.UpdateCategory)
+	r.POST("/detail", detail.CreateToDoDetail)
 
 	r.Run()
 }
